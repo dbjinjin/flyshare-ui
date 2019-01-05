@@ -16,7 +16,7 @@
     <el-row>
       <el-col :span="24">
         <div class="grid-content bg-purple-dark" align="left">
-          <el-button plain type="primary" icon="el-icon-plus" @click="onDataProcess(1)">新增</el-button>
+          <el-button plain type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
           <el-button plain type="primary" icon="el-icon-edit" @click="onDataProcess(2)">修改</el-button>
           <el-button plain type="danger" icon="el-icon-delete" @click="onDataProcess(4)">删除</el-button>
           <el-button plain type="success" icon="el-icon-upload" @click="onDataProcess(8)">上传</el-button>
@@ -32,7 +32,7 @@
       style="width: 100%;margin-top: 15px"
       @selection-change="handleSelectionChange">
 
-      <el-table-column type="selection"width="55"></el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod"></el-table-column>
       <el-table-column label="用户名" prop="username" width="150"></el-table-column>
       <el-table-column label="昵称" prop="nickname" width="150"></el-table-column>
@@ -55,6 +55,49 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="dataCount">
     </el-pagination>
+
+    <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="活动区域" :label-width="formLabelWidth">
+              <el-select v-model="form.region" placeholder="请选择活动区域">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="活动区域" :label-width="formLabelWidth">
+              <el-select v-model="form.region" placeholder="请选择活动区域">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -71,7 +114,20 @@
           username: '',
           nickname: ''
         },
-        multipleSelection: []
+        multipleSelection: [],
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        formLabelWidth: '100px',
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        }
       }
     },
     mounted() {
