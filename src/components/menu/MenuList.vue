@@ -8,7 +8,7 @@
         <el-input v-model="formInline.nickname" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button plain type="primary" icon="el-icon-search" @click="onSubmit" size="small">查询</el-button>
+        <el-button plain type="primary" icon="el-icon-search" @click="onSubmit" >查询</el-button>
         <el-button plain icon="el-icon-refresh">重置</el-button>
       </el-form-item>
     </el-form>
@@ -29,19 +29,18 @@
       :data="tableData"
       ref="multipleTable"
       border
-      height="650"
       style="width: 100%;margin-top: 15px"
       @selection-change="handleSelectionChange">
 
       <el-table-column type="selection"width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod"></el-table-column>
-      <el-table-column label="用户名" prop="username" width="180"></el-table-column>
-      <el-table-column label="昵称" prop="nickname" width="180"></el-table-column>
+      <el-table-column label="用户名" prop="username" width="150"></el-table-column>
+      <el-table-column label="昵称" prop="nickname" width="150"></el-table-column>
       <el-table-column label="性别" prop="gender" width="100"></el-table-column>
       <el-table-column label="出生日期" prop="birthday" width="160"></el-table-column>
       <el-table-column label="证件号" prop="idno" width="200"></el-table-column>
       <el-table-column label="联系地址" prop="address" width="200"></el-table-column>
-      <el-table-column label="联系电话" prop="telephone" width="180"></el-table-column>
+      <el-table-column label="联系电话" prop="telephone" width="160"></el-table-column>
       <el-table-column label="邮箱" prop="email" width="180"></el-table-column>
       <el-table-column label="制单时间" prop="predate" width="180"></el-table-column>
 
