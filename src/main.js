@@ -5,7 +5,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 
-axios.defaults.baseURL="http://192.168.1.6:8081/flyshare";
+axios.defaults.baseURL="http://106.13.61.81:8080/flyshare";
+ElementUI.
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

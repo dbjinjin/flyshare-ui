@@ -1,54 +1,60 @@
 <template>
   <div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="审批人">
-        <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+    <el-form :inline="true" :model="formInline" class="demo-form-inline" style="padding-top: 20px;">
+      <el-form-item label="用户名">
+        <el-input v-model="formInline.username" placeholder=""></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="formInline.region" placeholder="活动区域">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
+      <el-form-item label="昵称">
+        <el-input v-model="formInline.nickname" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-        <el-button icon="el-icon-refresh">重置</el-button>
+        <el-button plain type="primary" icon="el-icon-search" @click="onSubmit" size="small">查询</el-button>
+        <el-button plain icon="el-icon-refresh">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <!--<el-row>
-      <el-button disabled>测试</el-button>
-      <el-button type="danger" icon="el-icon-delete">删除</el-button>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary" icon="el-icon-printer">打印</el-button>
-      <el-button type="primary" icon="el-icon-loading">加载</el-button>
-    </el-row>-->
+    <el-row>
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark" align="left">
+          <el-button plain type="primary" icon="el-icon-plus" @click="onDataProcess(1)">新增</el-button>
+          <el-button plain type="primary" icon="el-icon-edit" @click="onDataProcess(2)">修改</el-button>
+          <el-button plain type="danger" icon="el-icon-delete" @click="onDataProcess(4)">删除</el-button>
+          <el-button plain type="success" icon="el-icon-upload" @click="onDataProcess(8)">上传</el-button>
+          <el-button plain type="warning" icon="el-icon-download"  @click="onDataProcess(16)">下载</el-button>
+        </div>
+      </el-col>
+    </el-row>
 
     <el-table
       :data="tableData"
-      style="width: 100%">
+      ref="multipleTable"
+      border
+      height="650"
+      style="width: 100%;margin-top: 15px"
+      @selection-change="handleSelectionChange">
 
+      <el-table-column type="selection"width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod"></el-table-column>
-      <el-table-column label="用户名" prop="username"></el-table-column>
-      <el-table-column label="昵称" prop="nickname"></el-table-column>
-      <el-table-column label="性别" prop="gender"></el-table-column>
-      <el-table-column label="出生日期" prop="birthday"></el-table-column>
-      <el-table-column label="证件号" prop="idno"></el-table-column>
-      <el-table-column label="联系地址" prop="address"></el-table-column>
-      <el-table-column label="联系电话" prop="telephone"></el-table-column>
-      <el-table-column label="邮箱" prop="email"></el-table-column>
-      <el-table-column label="制单时间" prop="predate"></el-table-column>
+      <el-table-column label="用户名" prop="username" width="180"></el-table-column>
+      <el-table-column label="昵称" prop="nickname" width="180"></el-table-column>
+      <el-table-column label="性别" prop="gender" width="100"></el-table-column>
+      <el-table-column label="出生日期" prop="birthday" width="160"></el-table-column>
+      <el-table-column label="证件号" prop="idno" width="200"></el-table-column>
+      <el-table-column label="联系地址" prop="address" width="200"></el-table-column>
+      <el-table-column label="联系电话" prop="telephone" width="180"></el-table-column>
+      <el-table-column label="邮箱" prop="email" width="180"></el-table-column>
+      <el-table-column label="制单时间" prop="predate" width="180"></el-table-column>
 
     </el-table>
 
-    <el-pagination style="padding-top: 10px;" background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="pageNumber"
-      :page-sizes="[10,20, 50, 100]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="dataCount">
+    <el-pagination style="padding-top: 15px;" background
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="pageNumber"
+                   :page-sizes="[10,20, 50, 100]"
+                   :page-size="pageSize"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="dataCount">
     </el-pagination>
   </div>
 </template>
@@ -63,9 +69,10 @@
         dataCount: 0,
         pageSize: 10,
         formInline: {
-          user: '',
-          region: ''
-        }
+          username: '',
+          nickname: ''
+        },
+        multipleSelection: []
       }
     },
     mounted() {
@@ -114,6 +121,47 @@
       },
       onSubmit() {
         console.log('submit!');
+      },
+      onDataProcess(optype) {
+        console.log('操作类型:' + optype);
+        if (optype === 1) {
+
+        }else if(optype === 2){
+
+        }else if(optype === 4){
+          const length =this.multipleSelection.length;
+          if(length===0){
+            this.$alert('请选择删除项?', '提示', {
+              confirmButtonText: '确定',
+            });
+          }else{
+            this.$confirm('此操作将永久删除选中数据, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              //取消选中
+              this.$refs.multipleTable.clearSelection();
+              //提示删除成功
+              this.$notify.success({
+                title: '提示',
+                message: '选中数据删除成功',
+                showClose: true,
+                duration: 2500
+              });
+            }).catch(() => {
+            });
+          }
+        }else if(optype === 8){
+
+        }else if(optype === 16){
+
+        }else {
+
+        }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
       }
     }
   }
