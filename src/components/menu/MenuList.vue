@@ -15,7 +15,7 @@
 
     <el-row>
       <el-col :span="24">
-        <div class="grid-content bg-purple-dark" align="left">
+        <div class="grid-content bg-purple-dark" align="left" >
           <el-button plain type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
           <el-button plain type="primary" icon="el-icon-edit" @click="onDataProcess(2)">修改</el-button>
           <el-button plain type="danger" icon="el-icon-delete" @click="onDataProcess(4)">删除</el-button>
@@ -56,9 +56,8 @@
                    :total="dataCount">
     </el-pagination>
 
-    <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
+    <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="35%" >
       <el-form :model="form">
-
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名" :label-width="formLabelWidth">
@@ -66,28 +65,49 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户名" :label-width="formLabelWidth">
+            <el-form-item label="昵称" :label-width="formLabelWidth">
               <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
-
         </el-row>
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="活动区域" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="出生日期" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="活动区域" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+            <el-form-item label="性别" :label-width="formLabelWidth">
+              <el-select v-model="form.region" placeholder="请选择性别" style="width: 100%;">
+                <el-option label="男" value="M"></el-option>
+                <el-option label="女" value="F"></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="证件号" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系电话" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="联系地址" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="邮箱" :label-width="formLabelWidth">
+              <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -98,7 +118,10 @@
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
+
   </div>
+
+
 </template>
 
 <script>
@@ -115,9 +138,8 @@
           nickname: ''
         },
         multipleSelection: [],
-        dialogTableVisible: false,
         dialogFormVisible: false,
-        formLabelWidth: '100px',
+        formLabelWidth: '120px',
         form: {
           name: '',
           region: '',
