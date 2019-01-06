@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 
-axios.defaults.baseURL="http://106.13.61.81:8080/flyshare/";
+axios.defaults.baseURL="http://127.0.0.1:8081/flyshare/";
 Vue.config.productionTip = false;
 Vue.use(ElementUI,{ size: 'small', zIndex: 3000 });
 Vue.prototype.axios = axios;
