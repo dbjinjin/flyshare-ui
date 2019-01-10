@@ -57,7 +57,7 @@
     data() {
 
       return {
-        verifycode: require('@/assets/verifycode.jpg'),
+        verifycode: require('@/assets/verifycode.png'),
         form: {
           username: '',
           password: '',
@@ -91,7 +91,6 @@
           background: 'rgba(0, 0, 0, 0.7)'
         });
 
-
         this.axios
           .get('/verify/loadCode', {
             params: {
@@ -115,9 +114,32 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            //校验通过
+            const loading = this.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+
+            this.axios.post('/login-check', this.form).then(response => {
+              const  reponseData = response.data;
+              const  result = reponseData.result;
+              const  message = reponseData.message;
+              console.log(result);
+              if(result==="success"){
+                this.$router.push('/menu')
+              }else{
+                this.$message.error(message);
+                this.loadVerifyCode();
+              }
+              loading.close();
+            }).catch(error => {
+              console.log(error);
+              loading.close();
+            });
+
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
