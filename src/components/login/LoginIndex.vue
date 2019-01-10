@@ -128,7 +128,7 @@
               const  message = reponseData.message;
               console.log(result);
               if(result==="success"){
-                this.$router.push('/menu')
+                this.$router.push('/user')
               }else{
                 this.$message.error(message);
                 this.loadVerifyCode();
