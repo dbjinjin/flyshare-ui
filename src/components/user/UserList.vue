@@ -1,15 +1,16 @@
 <template>
   <div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline" style="padding-top: 20px;">
-      <el-form-item label="用户名">
+    <back-header></back-header>
+    <el-form :inline="true" ref="formInline" :model="formInline" class="demo-form-inline" style="padding-top: 20px;">
+      <el-form-item label="用户名" prop="username">
         <el-input v-model="formInline.username" placeholder=""></el-input>
       </el-form-item>
-      <el-form-item label="昵称">
+      <el-form-item label="昵称" prop="nickname">
         <el-input v-model="formInline.nickname" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button plain type="primary" icon="el-icon-search" @click="onSubmit" >查询</el-button>
-        <el-button plain icon="el-icon-refresh">重置</el-button>
+        <el-button plain type="primary" icon="el-icon-search" @click="formQuery" >查询</el-button>
+        <el-button plain icon="el-icon-refresh" @click="formReset('formInline')">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -56,30 +57,32 @@
                    :total="dataCount">
     </el-pagination>
 
+
+    <back-footer></back-footer>
+
     <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="35%" >
       <el-form :model="form">
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form.username" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="昵称" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-form-item label="密码" :label-width="formLabelWidth">
+              <el-input v-model="form.password" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="12">
-            <el-form-item label="出生日期" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-form-item label="昵称" :label-width="formLabelWidth">
+              <el-input v-model="form.nickname" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="性别" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="请选择性别" style="width: 100%;">
+              <el-select v-model="form.gender" placeholder="请选择性别" style="width: 100%;">
                 <el-option label="男" value="M"></el-option>
                 <el-option label="女" value="F"></el-option>
               </el-select>
@@ -89,25 +92,41 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="证件号" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-form-item label="出生日期" :label-width="formLabelWidth">
+              <el-date-picker
+                size="small"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                v-model="form.birthday"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="证件号" :label-width="formLabelWidth">
+              <el-input v-model="form.idno" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="联系电话" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form.telephone" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系地址" :label-width="formLabelWidth">
+              <el-input v-model="form.address" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="联系地址" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
-            </el-form-item>
-          </el-col>
+
           <el-col :span="12">
             <el-form-item label="邮箱" :label-width="formLabelWidth">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form.email" autocomplete="off"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -115,10 +134,9 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="userAddConfirm">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 
 
@@ -141,14 +159,15 @@
         dialogFormVisible: false,
         formLabelWidth: '120px',
         form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          username: '',
+          password: '',
+          nickname: '',
+          gender: '',
+          birthday: "",
+          idno: "",
+          telephone: '',
+          address: '',
+          email: ''
         }
       }
     },
@@ -166,9 +185,10 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-
         this.axios.post('/user-list', {
           pageNumber: this.pageNumber,
+          username: this.formInline.username,
+          nickname: this.formInline.nickname,
           pageSize: this.pageSize
         }).then(response => {
           this.tableData = response.data.data;
@@ -182,22 +202,41 @@
         });
 
       },
+      /**
+       * Table索引列
+       */
       indexMethod(index) {
         return index + 1;
       },
+      /**
+       * 每页数量改变
+       */
       handleSizeChange(val) {
         this.pageSize = val;
         this.pageNumber = 1;
         this.loadData();
-        console.log(`每页 ${val} 条`);
       },
+      /**
+       * 跳转页
+       */
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
         this.pageNumber = val;
         this.loadData();
       },
-      onSubmit() {
-        console.log('submit!');
+      /**
+       * 界面查询表单-查询
+       */
+      formQuery() {
+        //表单查询
+        this.loadData();
+      },
+      /**
+       * 界面查询表单-重置
+       */
+      formReset(formName) {
+        //表单重置
+        this.$refs[formName].resetFields();
+        this.loadData();
       },
       onDataProcess(optype) {
         console.log('操作类型:' + optype);
@@ -239,6 +278,21 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+      },
+      userAddConfirm(){
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        this.axios.post('/user-add',this.form).then(response => {
+          this.message = response.data;
+          loading.close();
+        }).catch(error => {
+          console.log(error);
+          loading.close();
+        });
       }
     }
   }

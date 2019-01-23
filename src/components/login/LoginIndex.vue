@@ -126,9 +126,14 @@
               const  reponseData = response.data;
               const  result = reponseData.result;
               const  message = reponseData.message;
+              const  data = reponseData.data;
+              const  token = reponseData.token;
               console.log(result);
               if(result==="success"){
-                this.$router.push('/user')
+                //添加Token到LocalStorage中
+                window.localStorage.setItem("LOGIN_USER",JSON.stringify(data));
+                window.localStorage.setItem("LOGIN_TOKEN",token);
+                this.$router.push('/user');
               }else{
                 this.$message.error(message);
                 this.loadVerifyCode();
